@@ -32,17 +32,19 @@ class AthosAnalytics {
   final Client _httpClient = Client();
 
   AthosConfiguration? _configuration;
+  bool _loggingEnabled = true;
   String? _sessionId;
   String? _userId;
   AppInfoModel? _appInfo;
 
-  Future<void> initializeApp(AthosConfiguration configuration) async {
+  Future<void> initializeApp(AthosConfiguration configuration, {bool loggingEnabled = true}) async {
     if (_sessionId != null) {
       log('[ATHOS] Library already initialized.');
       return;
     }
 
     _configuration = configuration;
+    _loggingEnabled = loggingEnabled;
 
     final String? existingSessionId = await _storage.read(key: AthosKeys.sessionId);
 
@@ -71,6 +73,10 @@ class AthosAnalytics {
     }
   }
 
+  void setLoggingEnabled(bool enabled) {
+    _loggingEnabled = enabled;
+  }
+
   void logButtonPress(String buttonName, {Map<String, String>? payload}) {
     Map<String, String> eventPayload = {'button_name': buttonName};
 
@@ -94,6 +100,10 @@ class AthosAnalytics {
   void logEvent(String event, {Map<String, String>? payload}) {
     if (_configuration == null || _sessionId == null) {
       log('[ATHOS] Library not initialized. Call initializeApp();');
+      return;
+    }
+
+    if (!_loggingEnabled) {
       return;
     }
 
