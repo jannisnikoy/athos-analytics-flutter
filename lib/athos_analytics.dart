@@ -55,12 +55,17 @@ class AthosAnalytics {
     _userId = await _storage.read(key: AthosKeys.userId);
 
     _appInfo = await _getAppInfo();
-    final response = await _httpClient.put(Uri.https(_configuration!.baseUrl, '/v1/session'),
-        headers: _getHeaders(), body: jsonEncode(CreateSessionModel(existingSessionId, _appInfo!)));
 
-    _sessionId = SessionResponseModel.fromJson(jsonDecode(response.body)['content']).sessionId;
+    try {
+      final response = await _httpClient.put(Uri.https(_configuration!.baseUrl, '/v1/session'),
+          headers: _getHeaders(), body: jsonEncode(CreateSessionModel(existingSessionId, _appInfo!)));
 
-    await _storage.write(key: AthosKeys.sessionId, value: _sessionId);
+      _sessionId = SessionResponseModel.fromJson(jsonDecode(response.body)['content']).sessionId;
+
+      await _storage.write(key: AthosKeys.sessionId, value: _sessionId);
+    } catch (e) {
+      log('[ATHOS] Error creating session: $e');
+    }
 
     logEvent('app_started');
   }
@@ -112,8 +117,12 @@ class AthosAnalytics {
       eventPayload.addAll({'payload': jsonEncode(payload)});
     }
 
-    _httpClient.put(Uri.https(_configuration!.baseUrl, '/v1/event'),
-        headers: _getHeaders(), body: jsonEncode(eventPayload));
+    try {
+      _httpClient.put(Uri.https(_configuration!.baseUrl, '/v1/event'),
+          headers: _getHeaders(), body: jsonEncode(eventPayload));
+    } catch (e) {
+      log('[ATHOS] Error creating event: $e');
+    }
   }
 
   void reset() {
