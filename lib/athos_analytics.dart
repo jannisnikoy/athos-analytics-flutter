@@ -4,10 +4,11 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
+
 import 'models/app_info_model.dart';
 import 'models/create_session_model.dart';
 import 'models/session_response_model.dart';
-import 'package:device_info/device_info.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';
@@ -152,8 +153,8 @@ class AthosAnalytics {
       platformVersion = deviceInfo.version.release;
     } else if (Platform.isIOS) {
       final deviceInfo = await DeviceInfoPlugin().iosInfo;
-      platformDevice = deviceInfo.model;
-      platformVersion = deviceInfo.systemVersion;
+      platformDevice = deviceInfo.model ?? 'unknown';
+      platformVersion = deviceInfo.systemVersion ?? 'unknown';
     }
 
     return AppInfoModel(info.appName, info.packageName, info.version, info.buildNumber, platformName, platformDevice,

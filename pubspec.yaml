@@ -14,7 +14,7 @@ dependencies:
   package_info: ^2.0.2
   http: ^0.13.5
   json_annotation: ^4.7.0
-  device_info: ^2.0.3
+  device_info_plus: ^8.0.0
 
 dev_dependencies:
   flutter_test:
