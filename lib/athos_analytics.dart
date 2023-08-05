@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import 'models/app_info_model.dart';
 import 'models/create_session_model.dart';
@@ -12,7 +13,6 @@ import 'models/session_response_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';
-import 'package:package_info/package_info.dart';
 
 class AthosKeys {
   static const String sessionId = 'nl.mobles.athos.sessionId';
@@ -153,8 +153,8 @@ class AthosAnalytics {
       platformVersion = deviceInfo.version.release;
     } else if (Platform.isIOS) {
       final deviceInfo = await DeviceInfoPlugin().iosInfo;
-      platformDevice = deviceInfo.model ?? 'unknown';
-      platformVersion = deviceInfo.systemVersion ?? 'unknown';
+      platformDevice = deviceInfo.model;
+      platformVersion = deviceInfo.systemVersion;
     }
 
     return AppInfoModel(info.appName, info.packageName, info.version, info.buildNumber, platformName, platformDevice,
