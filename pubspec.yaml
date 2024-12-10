@@ -10,17 +10,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_secure_storage: 9.0.0
-  device_info_plus: ^10.1.0
+  flutter_secure_storage: 9.2.2
+  device_info_plus: ^11.1.1
   json_annotation: ^4.9.0
-  package_info_plus: ^8.0.0
+  package_info_plus: ^8.1.1
   http: ^1.2.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.2
-  build_runner: ^2.4.9
+  flutter_lints: ^5.0.0
+  build_runner: ^2.4.13
   json_serializable: ^6.8.0
 
 flutter:
