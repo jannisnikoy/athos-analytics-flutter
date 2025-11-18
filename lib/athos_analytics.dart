@@ -74,8 +74,10 @@ class AthosAnalytics {
   void setUserId(String? userId) async {
     if (userId == null) {
       await _storage.delete(key: AthosKeys.userId);
+      _userId = null;
     } else {
       await _storage.write(key: AthosKeys.userId, value: userId);
+      _userId = userId;
     }
   }
 
